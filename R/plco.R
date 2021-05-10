@@ -26,6 +26,10 @@ plco.request <- function(resource,
   text <- httr::content(response, as = "text")
   results <- jsonlite::fromJSON(text, flatten = T)
 
+  if (hasName(results, "error")) {
+    stop(paste(results$error, results$message, sep = ": "))
+  }
+
   if (query$raw == "true" &&
     hasName(results, "data") &&
     hasName(results, "columns")) {
